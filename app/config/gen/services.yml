@@ -1,0 +1,22 @@
+parameters: null
+services:
+    app.post_factory:
+        class: AppBundle\Model\Post\PostFactory
+        arguments: null
+    app.post_gateway:
+        class: AppBundle\Repository\PostGateway
+        arguments:
+            - 'AppBundle:Post'
+        factory:
+            - '@doctrine'
+            - getRepository
+    app.post_repository:
+        class: AppBundle\Model\Post\PostRepository
+        arguments:
+            - '@app.post_gateway'
+            - '@app.post_factory'
+    app.api_post_handler:
+        class: AppBundle\Handler\Post\ApiPostHandler
+        arguments:
+            - '@app.post_repository'
+            - '@form.factory'

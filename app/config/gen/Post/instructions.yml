@@ -1,0 +1,49 @@
+Controller:
+    index:
+        security:
+            - ROLE_USER
+    get:
+        security:
+            - ROLE_USER
+    post:
+        security:
+            - ROLE_ADMIN
+    put:
+        security:
+            - ROLE_ADMIN
+    delete:
+        security:
+            - ROLE_ADMIN
+    options:
+
+Handlers:
+    app.api_post_handler:
+        class: AppBundle\Handler\Post\ApiPostHandler
+        arguments:
+            - [ "@app.post_repository", AppBundle\Model\Post\PostRepository ]
+            - [ "@form.factory", Symfony\Component\Form\Form ]
+        dir: "Handler/Post"
+        classname: "ApiPostHandler"
+        type: Handler
+
+Repository:
+    app.post_factory:
+        class: AppBundle\Model\Post\PostFactory
+        dir: "Model/Post"
+        classname: "PostFactory"
+        type: Factory
+
+    app.post_gateway:
+        class: AppBundle\Repository\PostGateway
+        factory: [ "@doctrine", getRepository] #  "@doctrine" or "@doctrine_mongodb"
+        arguments: [ "AppBundle:Post" ]
+        dir: "Model/Post"
+        classname: "PostGateway"
+        type: Gateway
+
+    app.post_repository:
+        class: AppBundle\Model\Post\PostRepository
+        arguments: [ "@app.post_gateway", "@app.post_factory" ]
+        dir: "Model/Post"
+        classname: "PostRepository"
+        type: Repository

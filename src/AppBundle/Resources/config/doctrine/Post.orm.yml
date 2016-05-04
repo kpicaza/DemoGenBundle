@@ -1,0 +1,24 @@
+# src/AppBundle/Resources/config/docritne/Post.orm.yml
+AppBundle\Entity\Post:
+    type: entity
+    table: gentest_post
+    repositoryClass: AppBundle\Repository\PostGateway
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            length: '140'
+        description:
+            type: text
+        created:
+            type: datetime
+        updated:
+            type: datetime
+            nullable: true
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]
